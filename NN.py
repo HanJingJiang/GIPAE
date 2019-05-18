@@ -9,7 +9,7 @@ from keras.layers import Dense, Dropout, Flatten
 import csv
 def ReadMyCsv(SaveList, fileName):
     csv_reader = csv.reader(open(fileName))
-    for row in csv_reader:  # 把每个rna疾病对加入OriginalData，注意表头
+    for row in csv_reader:  
         SaveList.append(row)
     return
 
@@ -28,23 +28,21 @@ y=np.concatenate((data1,data2),axis=0)
 x = np.array(x)
 print(x.shape)
 from sklearn.cross_validation import train_test_split
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)    # 切分数据集进行训练，用全部数据集x进行“预测”！！！！
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)   
 
 
-# 改变数据类型
 x_train=x_train.reshape(-1,1,970,1)
-# 970 1136
 x_test=x_test.reshape(-1,1,970,1)
 x = x.reshape(-1,1,970,1)
 print(x_train.shape)
 print(x_test.shape)
-batch_size=32    #每次喂给网络32组数据
+batch_size=32    
 epochs=2
-model = Sequential() #这里使用序贯模型，比较容易理解
+model = Sequential() 
 return_sequences=True
 model.add(BatchNormalization(input_shape=(1,970,1)))
 model.add(Flatten())
-model.add(Dense(64, activation='relu',  name='Dense-2'))  #该全连接层共128个神经元
+model.add(Dense(64, activation='relu',  name='Dense-2'))  
 model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid',))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics = ['accuracy'])
